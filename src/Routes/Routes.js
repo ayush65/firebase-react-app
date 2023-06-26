@@ -1,0 +1,59 @@
+import React, { useEffect, useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Signup from "../Pages/SIgnup/Signup";
+import Question from "../Pages/Questions/Question";
+import Signin from "../Pages/Signin/Signin";
+import QrComponent from "../Pages/Qrcode/QrCodeComponent";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+const AllRoutes = () => {
+  const [userAuthenticated, setUserAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid;
+        setUserAuthenticated(true);
+        console.log("user is authenticated");
+      } else {
+        setUserAuthenticated(false);
+        console.log("user is not authenticated");
+      }
+    });
+  }, []);
+
+  return (
+    <Routes>
+      {" "}
+      {/* {userAuthenticated ? (
+        <>
+          <Route path="/download" element={<QrComponent />} />
+          <Route path="/questions" element={<Question />} />
+          
+        </>
+      ) : (
+        <>
+          <Route path="/signin" element={<Signin />} />
+          <Route path="/" element={<Signup />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </>
+      )} */}
+      <Route
+        path="/download"
+        element={userAuthenticated ? <QrComponent /> : <Signup />}
+      />
+      <Route path="/" element={userAuthenticated ? <Question /> : <Signup />} />
+      <Route
+        path="/signin"
+        element={userAuthenticated ? <Question /> : <Signin />}
+      />
+      <Route
+        path="/questions"
+        element={userAuthenticated ? <Question /> : <Signup />}
+      />
+    </Routes>
+  );
+};
+
+export default AllRoutes;
