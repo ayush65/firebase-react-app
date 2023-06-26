@@ -25,20 +25,6 @@ const AllRoutes = () => {
 
   return (
     <Routes>
-      {" "}
-      {/* {userAuthenticated ? (
-        <>
-          <Route path="/download" element={<QrComponent />} />
-          <Route path="/questions" element={<Question />} />
-          
-        </>
-      ) : (
-        <>
-          <Route path="/signin" element={<Signin />} />
-          <Route path="/" element={<Signup />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </>
-      )} */}
       <Route
         path="/download"
         element={userAuthenticated ? <QrComponent /> : <Signup />}
